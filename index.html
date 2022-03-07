@@ -29,7 +29,7 @@
     </header>
 
     <main id="content" class="main-content" role="main">
-      <h3 id="what-we-did">Introduction</h3>
+      <h2 id="what-we-did">Introduction</h2>
 
 <p>
 Our project is to explore both Markov Chain Monte Carlo algorithms and variational inference methods for Latent Dirichlet Allocation (LDA). This blog is meant to be used by a consumer-facing or general audience, and so we will skip the technical details and give a high-level plain language explanation. For more technical details, please refer to our final paper.<br><br>
@@ -37,7 +37,7 @@ Our project is to explore both Markov Chain Monte Carlo algorithms and variation
 —</p>
 We investigate both Markov Chain Monte Carlo and variational inference methods for Latent Dirichlet Allocation (LDA), a generative probabilistic topic model for unstructured data such as text. LDA is a generative probabilistic topic model, which means that we treat data as observations resulting from a generative probabilistic process that includes hidden variables, i.e. the structure we’re looking for in the data. Topic modeling enables us to meet algorithmic requirements for organizing, comprehending, and annotating documents in accordance with the discovered structure. In the case of text data, hidden variables reflect the thematic structure of a corpus to which we do not have access; we only have access to our observations, which are the collection’s documents. Our objective is to infer this hidden structure using posterior inference, that is, to compute the conditional distribution of the hidden variables given our observations. To accomplish this, we will leverage our knowledge from Q1 about inference methods.</p>
 
-<h3 id="Latent Dirichlet Allocation (LDA)">Latent Dirichlet Allocation (LDA)</a></h3>
+<h2 id="Latent Dirichlet Allocation (LDA)">Latent Dirichlet Allocation (LDA)</a></h2>
 <p>
 Latent Dirichlet Allocation (LDA) is a model that describes how collections of discrete data are generated and tagged. For our purposes, we will focus on text documents about various topics. For example, every Wikipedia page can be considered as a document and each document would be about several topics, such as politics, soccer, history, music, and so on.<br><br>
 
@@ -65,20 +65,20 @@ Putting it together, we will condition on the chosen topic for the word from the
 
 This process is called Latent Dirichlet Allocation. The term “latent” refers to the fact that many of the parameters cannot be observed directly. The term “Dirichlet Allocation” refers to the manner in which we assign discrete probabilities on topic proportions.
 
-<h3 id="Bayesian Inference">Bayesian Inference</h3>
+<h2 id="Bayesian Inference">Bayesian Inference</h2>
 Now that we have a generative model on how documents are generated from topics, the next step is to fit the model on live data. This process is called Bayesian Inference, which maximizes the likelihood of the latent parameters to match what we have seen from live data.<br><br>
 
 The issue is that solving this problem is intractable. This means it is difficult or impossible to solve analytically. The problem arises from the dependence of variables from the two pathways of “Topic Assignment” and “Topic Vocab”, where solving each pathway would require knowledge of the other.<br><br>
 
 Instead of trying to find the exact solution, it would thus be better to find a good approximate solution. Along this line, Mean-field variational inference and Gibbs Sampling are two popular ways to solve the inference problem for the latent parameters.<br><br>
 
-<h4 id="Mean-field variational inference">Mean-field variational inference</h3>
-<h5 id="Variational inference">Variational inference</h5>
+<h3 id="Mean-field variational inference">Mean-field variational inference</h3>
+<h4 id="Variational inference">Variational inference</h4>
 The technical term for the correct distribution given the observed data is the posterior, denoted by P, which is often not a “nice” distribution to deal with mathematically. The posterior can be any distribution at all and doesn’t have to be a well-known distribution that is mathematically easy to manipulate. The solution is to choose a distribution Q from a user-defined variational family that approximates P. (We choose Q within the variational family that is “closest” to P, using measures such as KL divergences.) This process of choosing a variational family, and then finding the closest distribution Q to P within that variational family is known as variational inference.
 <p><img src="./images/VariationalInference.png" alt="Variational Inference model" /></p>
 The graph above illustrates this where the posterior P which is conditioned on the observed data X has an unknown blue distribution. We use a Gaussian variational family, and vary the parameters which are in this case the mean and standard deviation to find the best Q to match the posterior. It would not be a perfect match, and thus this is an approximate solution. Obviously, the choice of the variational family would also determine how close Q will ultimately be to P.
 
-<h4 id="Mean-field variational inference">Mean-field variational inference</h3>
+<h3 id="Mean-field variational inference">Mean-field variational inference</h3>
 Mean-field variational inference is a special case of variational inference where we further assume that the variational family can be fully factored. In other words, the latent parameters are all independent of each other. Recall that our main problem was due to the dependence of the variables on the left and right pathways to the observed data, with conditional probabilities involved in the definition. If we instead choose to break this and assume independence, the variational family would not have to deal with conditional probabilities but instead, be simply the product of all the multinomial and Dirichlet distributions. Explicitly:
 <p><img src="./images/MFVI.png" alt="MFVI model" /></p>
 The template for Mean-field variational inference thus looks like the image below. The arrows are no longer linked since the variables are independent. In addition, you would notice variational parameters phi and gamma. (And while not shown, there is also lambda as the variational parameter for beta.) These are variational parameters that are used to tweak the Q distribution to be as close to P as possible.
@@ -90,7 +90,7 @@ Then, the M step matches the beta from the right pathway for topic vocab, while 
 The pseudo-code of the EM algorithm is shown below.
 <p><img src="./images/EMalg.png" alt="EMalg" /></p>
 
-<h4 id="Gibbs Sampling">Gibbs Sampling</h4>
+<h3 id="Gibbs Sampling">Gibbs Sampling</h3>
 Another way to solve the Bayesian inference problem of LDA is via Gibbs Sampling.<br><br>
 
 Sampling is a method to use random numbers to draw samples in an attempt to find the probability distribution of the posterior, for example, to produce a histogram of the distribution.<br><br>
@@ -98,7 +98,7 @@ Sampling is a method to use random numbers to draw samples in an attempt to find
 Gibbs Sampling is a specialized method of sampling that falls under the category of Markov chain Monte Carlo (MCMC) algorithms. This technique involves choosing the next sample based on taking an informed step from the last sample in the chain. In this matter, more time can be spent sampling the distribution which the highest contribution to the probability distribution, hence more efficiently solving the problem.<br><br>    
 
 <h3 id="our-approaches"><a href="/project-presentation/sections/approaches.html">Our approaches</a></h3>
-<h5 id="data-preprocessing">Data Preprocessing</h5>
+<h4 id="data-preprocessing">Data Preprocessing</h4>
 <p><img src="./images/image3.png" alt="Data Preprocessing Approaches" /></p>
 
 <h2><img src="./images/image4.png" alt="Data Preprocessing Approaches" /></h2>
@@ -108,7 +108,11 @@ Gibbs Sampling is a specialized method of sampling that falls under the category
   
 
 <h3 id="findings"><a href="/project-presentation/sections/findings.html">Findings</a></h3>
-
+We spent a lot of time discussing how to infer the latent parameters of LDA. The final output that is actually of most interest is the topic vocab or beta. We ran our experiment on documents from Wikipedia and here are the vocabularies of the first two topics.
+<p><img src="./images/Topics1.png" alt="Topics1" /></p>
+The first topic above appears to be about storybooks, as you can see from the relative frequencies of “story”, “book” and “character” which appear with higher probability than other documents on different topics.
+<p><img src="./images/Topics2.png" alt="Topics2" /></p>
+The second topic above appears to be about the geography of a village or town.
 
       <footer class="site-footer">
         
